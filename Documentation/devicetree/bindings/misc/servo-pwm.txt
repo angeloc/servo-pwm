@@ -1,0 +1,30 @@
+LED connected to PWM
+
+Required properties:
+- compatible : should be "servo-pwm".
+
+Each servo is represented as a servo-pwm device.
+
+Servo properties:
+- pwms : PWM property to point to the PWM device (phandle)/port (id) and to
+  specify the period time to be used: <&phandle id period_ns>;
+- duty-0 : (optional) [default 500000] duty cycle to set the servo motor at
+  0 degrees, useful to compensate for devices drift.
+- duty-180 : (optional) [default 2500000] duty cycle to set the servo motor at
+  90 degrees, useful to compensate for devices drift.
+- angle : (optional) [defaul 0] set the starting angle at driver loading.
+
+Example:
+
+pwm: pwm@0 {
+	compatible = "pwm-gpio";
+	pwm-gpio = <&pio 6 3 GPIO_ACTIVE_LOW>;
+};
+
+servo: servo@0 {
+	compatible = "servo-pwm";
+	pwms = <&pwm 0 2000000>;
+	duty-0 = <60000>;
+	duty-180 = <260000>;
+	angle = <90>;
+};

@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/misc/servo-pwm.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: Servo motor connected to PWM
+
+maintainers:
+  - Angelo Compagnucci <angelo@amarulasolutions.com>
+
+description:
+  Each servo is represented as a servo-pwm device.
+  The 20ms period is the accepted standard and so most of the motors
+  support it, while the duty cycle to be at min/max positions or how
+  many degrees the motor can move varies a lot between manufacturers.
+  The most common type of servo (SG90) has 180 degrees and moves
+  between 0.5ms and 2.5ms duty cycle.
+
+properties:
+  compatible:
+    const: servo-pwm
+
+patternProperties:
+  properties:
+    pwms:
+      maxItems: 1
+
+    pwm-names: true
+
+    degrees:
+      description:
+        How many degrees the motor can move.
+      $ref: /schemas/types.yaml#/definitions/uint32
+
+    duty-min:
+      description:
+        Duty cycle for position the motor at 0 degrees.
+      $ref: /schemas/types.yaml#/definitions/uint32
+
+    duty-max:
+      description:
+        Duty cycle for positioning the motor at "degrees" angle.
+      $ref: /schemas/types.yaml#/definitions/uint32
+
+additionalProperties: false
+
+examples:
+  - |
+
+    servo: servo@0 {
+      compatible = "servo-pwm";
+      pwms = <&pwm 0 20000000 0>;
+      degrees = <180>;
+      duty-min = <500000>;
+      duty-max = <2500000>;
+    };
+
+...
